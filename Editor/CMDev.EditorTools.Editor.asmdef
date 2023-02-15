@@ -1,0 +1,18 @@
+{
+    "name": "CMDev.EditorTools.Editor",
+    "rootNamespace": "CMDev.EditorTools.Editor",
+    "references": [
+        "GUID:151548d1e3e0c084aa9dec00a67be508"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
