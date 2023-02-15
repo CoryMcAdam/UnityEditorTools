@@ -24,6 +24,8 @@ namespace CMDev.EditorTools.Editor
 
             RegisterCallback<AttachToPanelEvent>(OnAttachToPanel);
             RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
+
+            UpdateState();
         }
 
         private void SceneSelectorAddButton_Clicked()
@@ -36,13 +38,24 @@ namespace CMDev.EditorTools.Editor
             EditorApplication.playModeStateChanged += EditorApplication_PlayModeStateChanged;
             EditorApplication.projectChanged += EditorApplication_ProjectChanged;
             EditorSceneManager.sceneOpened += EditorSceneManager_SceneOpened;
+
+            EditorSceneSelector.SavedScenesUpdatedEvent += EditorSceneSelector_SavedScenesUpdated;
         }
+
+
 
         private void OnDetachFromPanel(DetachFromPanelEvent evnt)
         {
             EditorApplication.playModeStateChanged -= EditorApplication_PlayModeStateChanged;
             EditorApplication.projectChanged -= EditorApplication_ProjectChanged;
             EditorSceneManager.sceneOpened -= EditorSceneManager_SceneOpened;
+
+            EditorSceneSelector.SavedScenesUpdatedEvent -= EditorSceneSelector_SavedScenesUpdated;
+        }
+
+        private void EditorSceneSelector_SavedScenesUpdated()
+        {
+            UpdateState();
         }
 
         private void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)
@@ -68,7 +81,20 @@ namespace CMDev.EditorTools.Editor
                 return;
             }
 
-            SetEnabled(false);
+            {
+                Scene currentScene = SceneManager.GetActiveScene();
+
+                for (int i = 0; i < EditorSceneSelector.SavedScenes.Count; i++)
+                {
+                    if (EditorSceneSelector.SavedScenes[i].Path == currentScene.path)
+                    {
+                        SetEnabled(false);
+                        return;
+                    }
+                }
+            }
+
+            SetEnabled(true);
         }
     }
 }

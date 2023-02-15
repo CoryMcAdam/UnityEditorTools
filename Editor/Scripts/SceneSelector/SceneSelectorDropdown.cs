@@ -33,9 +33,8 @@ namespace CMDev.EditorTools.Editor
 
             for (int i = 0; i < EditorSceneSelector.SavedScenes.Count; i++)
             {
-                string scenePath = EditorSceneSelector.SavedScenes[i];
-
-                string sceneName = Path.GetFileNameWithoutExtension(scenePath);
+                string scenePath = EditorSceneSelector.SavedScenes[i].Path;
+                string sceneName = EditorSceneSelector.SavedScenes[i].Name;
 
                 menu.AddItem(new GUIContent(sceneName), text == sceneName, () => OnDropdownItemSelected(sceneName, scenePath));
             }
