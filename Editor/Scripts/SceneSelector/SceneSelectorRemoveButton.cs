@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor.Toolbars;
 using UnityEditor;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using UnityEditor.SceneManagement;
+using UnityEditor.Toolbars;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Data;
+using UnityEngine.UIElements;
 
 namespace CMDev.EditorTools.Editor
 {
@@ -26,7 +22,7 @@ namespace CMDev.EditorTools.Editor
             RegisterCallback<AttachToPanelEvent>(OnAttachToPanel);
             RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
 
-            UpdateState();
+            UpdateButtonState();
         }
 
         private void SceneSelectorRemoveButton_Clicked()
@@ -52,27 +48,27 @@ namespace CMDev.EditorTools.Editor
             EditorSceneSelector.SavedScenesUpdatedEvent -= EditorSceneSelector_SavedScenesUpdated;
         }
 
-        private void EditorSceneSelector_SavedScenesUpdated()
-        {
-            UpdateState();
-        }
-
         private void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)
         {
-            UpdateState();
+            UpdateButtonState();
         }
 
         private void EditorApplication_ProjectChanged()
         {
-            UpdateState();
+            UpdateButtonState();
         }
 
         private void EditorSceneManager_SceneOpened(Scene scene, OpenSceneMode sceneMode)
         {
-            UpdateState();
+            UpdateButtonState();
         }
 
-        private void UpdateState()
+        private void EditorSceneSelector_SavedScenesUpdated()
+        {
+            UpdateButtonState();
+        }
+
+        private void UpdateButtonState()
         {
             if (EditorApplication.isPlaying)
             {

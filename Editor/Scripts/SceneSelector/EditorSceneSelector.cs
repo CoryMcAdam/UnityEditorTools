@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -43,8 +42,6 @@ namespace CMDev.EditorTools.Editor
             SceneData sceneData = new SceneData(currentScene);
             _savedScenes.Add(sceneData);
 
-            Debug.Log("Added scene");
-
             SavedScenesUpdatedEvent?.Invoke();
             SaveToEditorPrefs();
         }
@@ -64,7 +61,6 @@ namespace CMDev.EditorTools.Editor
                 if (_savedScenes[i].Path == currentScene.path)
                 {
                     _savedScenes.RemoveAt(i);
-                    Debug.Log("Removed scene");
                     break;
                 }
             }

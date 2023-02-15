@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Overlays;
-using UnityEditor.UIElements;
-using UnityEngine;
 
 namespace CMDev.EditorTools.Editor
 {
