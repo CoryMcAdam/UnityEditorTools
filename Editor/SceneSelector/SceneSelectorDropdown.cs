@@ -50,6 +50,8 @@ namespace CMDev.EditorTools.Editor
             EditorApplication.playModeStateChanged += EditorApplication_PlayModeStateChanged;
             EditorApplication.projectChanged += EditorApplication_ProjectChanged;
             EditorSceneManager.sceneOpened += EditorSceneManager_SceneOpened;
+
+            UpdateButtonState();
         }
 
         private void OnDetachFromPanel(DetachFromPanelEvent evnt)
@@ -57,6 +59,8 @@ namespace CMDev.EditorTools.Editor
             EditorApplication.playModeStateChanged -= EditorApplication_PlayModeStateChanged;
             EditorApplication.projectChanged -= EditorApplication_ProjectChanged;
             EditorSceneManager.sceneOpened -= EditorSceneManager_SceneOpened;
+
+            UpdateButtonState();
         }
 
         private void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)
@@ -84,6 +88,11 @@ namespace CMDev.EditorTools.Editor
         private void EditorSceneManager_SceneOpened(Scene scene, OpenSceneMode sceneMode)
         {
             text = scene.name;
+        }
+
+        private void UpdateButtonState()
+        {
+            SetEnabled(!EditorApplication.isPlaying);
         }
     }
 }

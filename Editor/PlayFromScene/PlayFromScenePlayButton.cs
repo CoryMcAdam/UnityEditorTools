@@ -32,12 +32,16 @@ namespace CMDev.EditorTools.Editor
         {
             EditorApplication.playModeStateChanged += EditorApplication_PlayModeStateChanged;
             EditorSceneSelector.SavedScenesUpdatedEvent += EditorSceneSelector_SavedScenesUpdated;
+
+            UpdateButtonState();
         }
 
         private void OnDetachFromPanel(DetachFromPanelEvent evnt)
         {
             EditorApplication.playModeStateChanged -= EditorApplication_PlayModeStateChanged;
             EditorSceneSelector.SavedScenesUpdatedEvent -= EditorSceneSelector_SavedScenesUpdated;
+
+            UpdateButtonState();
         }
 
         private void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)

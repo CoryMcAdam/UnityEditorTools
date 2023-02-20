@@ -37,6 +37,8 @@ namespace CMDev.EditorTools.Editor
             EditorSceneManager.sceneOpened += EditorSceneManager_SceneOpened;
 
             EditorSceneSelector.SavedScenesUpdatedEvent += EditorSceneSelector_SavedScenesUpdated;
+
+            UpdateButtonState();
         }
 
 
@@ -48,6 +50,8 @@ namespace CMDev.EditorTools.Editor
             EditorSceneManager.sceneOpened -= EditorSceneManager_SceneOpened;
 
             EditorSceneSelector.SavedScenesUpdatedEvent -= EditorSceneSelector_SavedScenesUpdated;
+
+            UpdateButtonState();
         }
 
         private void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)

@@ -39,6 +39,8 @@ namespace CMDev.EditorTools.Editor
             EditorSceneManager.sceneOpened += EditorSceneManager_SceneOpened;
 
             EditorPlayFromScene.SelectedSceneUpdatedEvent += EditorPlayFromScene_SelectedSceneUpdatedEvent;
+
+            UpdateButtonState();
         }
 
         private void OnDetachFromPanel(DetachFromPanelEvent evnt)
@@ -48,6 +50,8 @@ namespace CMDev.EditorTools.Editor
             EditorSceneManager.sceneOpened -= EditorSceneManager_SceneOpened;
 
             EditorPlayFromScene.SelectedSceneUpdatedEvent -= EditorPlayFromScene_SelectedSceneUpdatedEvent;
+
+            UpdateButtonState();
         }
 
         private void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)
