@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Toolbars;
@@ -31,7 +29,7 @@ namespace CMDev.EditorTools.Editor
 
         private void PlayFromSceneSelectSceneButton_Clicked()
         {
-            EditorPlayFromScene.SelectScene();
+            EditorPlayFromScene.ToggleSelectedScene();
         }
 
         private void OnAttachToPanel(AttachToPanelEvent evnt)
@@ -69,7 +67,7 @@ namespace CMDev.EditorTools.Editor
 
         private void EditorPlayFromScene_SelectedSceneUpdatedEvent()
         {
-            
+
             UpdateButtonState();
         }
 
@@ -77,14 +75,7 @@ namespace CMDev.EditorTools.Editor
         {
             text = EditorPlayFromScene.SelectedSceneName + " ";
 
-            if (EditorApplication.isPlaying)
-            {
-                SetEnabled(false);
-                return;
-            }
-
-            SetEnabled(true);
+            SetEnabled(!EditorApplication.isPlaying);
         }
-
     }
 }

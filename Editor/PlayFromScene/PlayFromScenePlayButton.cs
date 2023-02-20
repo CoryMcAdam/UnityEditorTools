@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEditor.Toolbars;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace CMDev.EditorTools.Editor
@@ -56,7 +52,7 @@ namespace CMDev.EditorTools.Editor
 
         private void UpdateButtonState()
         {
-
+            SetEnabled(!EditorApplication.isPlaying);
         }
     }
 }

@@ -1,30 +1,33 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CMDev.EditorTools.Editor
 {
-    [InitializeOnLoad]
     public static class EditorPlayFromScene
     {
+        //Private
         private static SceneData _selectedScene;
+        private static SceneData _previousScene;
+        private static bool _startedFromDifferentScene;
 
-        public static event Action SelectedSceneUpdatedEvent;
+        //Consts
+        public const string PLAY_FROM_SCENE_PREF = "PlayFromScene";
+        public const string PLAY_FROM_SCENE_SCENE_PREF = PLAY_FROM_SCENE_PREF + ".SavedScene";
+        public const string PLAY_FROM_SCENE_ACTIVE_PREF = PLAY_FROM_SCENE_PREF + ".StartedFromDifferentScene";
+        public const string PLAY_FROM_SCENE_PREV_SCENE_PREF = PLAY_FROM_SCENE_PREF + ".PreviousScene";
 
-        public const string PLAY_FROM_SCENE_SCENE_PREF = "PlayFromScene.SavedScene";
-        public const string PLAY_FROM_SCENE_ACTIVE_PREF = "PlayFromScene.Active";
-        public const string PLAY_FROM_SCENE_PREV_SCENE_PREF = "PlayFromScene.PreviousScene";
-
+        //Properties
         public static string SelectedSceneName { get { return _selectedScene != null ? _selectedScene.Name : "None"; } }
+
+        //Events
+        public static event Action SelectedSceneUpdatedEvent;
 
         static EditorPlayFromScene()
         {
             EditorApplication.playModeStateChanged += EditorApplication_PlayModeStateChanged;
+            LoadFromEditorPrefs();
         }
 
         public static void UpdateScene()
@@ -32,7 +35,7 @@ namespace CMDev.EditorTools.Editor
             LoadFromEditorPrefs();
         }
 
-        public static void SelectScene()
+        public static void ToggleSelectedScene()
         {
             Scene currentScene = SceneManager.GetActiveScene();
 
@@ -40,32 +43,14 @@ namespace CMDev.EditorTools.Editor
                 return;
 
             if (_selectedScene?.Path == currentScene.path)
-                DeselectCurrentScene();
+                SelectScene(null);
             else
-                SelectCurrentScene();
+                SelectScene(currentScene);
         }
 
-        private static void SelectCurrentScene()
+        private static void SelectScene(Scene? scene)
         {
-            Scene currentScene = SceneManager.GetActiveScene();
-
-            if (currentScene == null)
-                return;
-
-            _selectedScene = new SceneData(currentScene);
-
-            SelectedSceneUpdatedEvent?.Invoke();
-            SaveToEditorPrefs();
-        }
-
-        private static void DeselectCurrentScene()
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-
-            if (currentScene == null)
-                return;
-
-            _selectedScene = null;
+            _selectedScene = scene != null ? new SceneData(scene.Value) : null;
 
             SelectedSceneUpdatedEvent?.Invoke();
             SaveToEditorPrefs();
@@ -79,17 +64,16 @@ namespace CMDev.EditorTools.Editor
         private static void LoadFromEditorPrefs()
         {
             _selectedScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_SCENE_PREF));
+            _previousScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_PREV_SCENE_PREF));
+            _startedFromDifferentScene = Prefs.GetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF);
         }
 
         public static void ChangeSceneAndEnterPlaymode()
         {
-            Debug.Log("Changing scene and entering playmode");
             Scene currentScene = SceneManager.GetActiveScene();
 
             if (currentScene.path != _selectedScene.Path)
             {
-                Debug.Log("Played from different scene");
-
                 EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 
                 Prefs.SetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF, true);
@@ -98,37 +82,19 @@ namespace CMDev.EditorTools.Editor
                 EditorSceneManager.OpenScene(_selectedScene.Path);
             }
 
-           
-
             EditorApplication.EnterPlaymode();
-
-            Debug.Log("Changed scene and entered playmode");
         }
 
         private static void EditorApplication_PlayModeStateChanged(PlayModeStateChange stateChange)
         {
-            Debug.Log("Play mode changed");
-
-            bool playedFromDifferentScene = Prefs.GetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF);
-
-            if (!playedFromDifferentScene)
+            if (!_startedFromDifferentScene)
                 return;
-
-            Debug.Log("Played from different scene");
 
             if (stateChange == PlayModeStateChange.EnteredEditMode)
             {
-                SceneData previousScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_PREV_SCENE_PREF));
-
-                Debug.Log($"Opening {previousScene.Name}");
-                EditorSceneManager.OpenScene(previousScene.Path);
-
-
+                EditorSceneManager.OpenScene(_previousScene.Path);
                 Prefs.SetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF, false);
-
             }
-
-            
         }
     }
 }

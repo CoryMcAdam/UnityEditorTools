@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,6 +15,11 @@ namespace CMDev.EditorTools.Editor
             EditorPrefs.SetBool($"{Application.productName}.{prefName}", value);
         }
 
+        public static void SetIntPref(string prefName, int value)
+        {
+            EditorPrefs.SetInt($"{Application.productName}.{prefName}", value);
+        }
+
         public static string GetStringPref(string prefName)
         {
             return EditorPrefs.GetString($"{Application.productName}.{prefName}");
@@ -25,6 +28,11 @@ namespace CMDev.EditorTools.Editor
         public static bool GetBoolPref(string prefName)
         {
             return EditorPrefs.GetBool($"{Application.productName}.{prefName}");
+        }
+
+        public static int GetIntPref(string prefName)
+        {
+            return EditorPrefs.GetInt($"{Application.productName}.{prefName}");
         }
     }
 }

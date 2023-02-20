@@ -4,18 +4,22 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CMDev.EditorTools.Editor
 {
     public static class EditorSceneSelector
     {
+        //Private
         private static List<SceneData> _savedScenes = new List<SceneData>();
-        public static ReadOnlyCollection<SceneData> SavedScenes { get { return _savedScenes.AsReadOnly(); } }
-
+        
+        //Consts
         public const string SCENE_SELECTOR_PREF = "EditorSceneSelector.SavedScenes";
 
+        //Properties
+        public static ReadOnlyCollection<SceneData> SavedScenes { get { return _savedScenes.AsReadOnly(); } }
+        
+        //Events
         public static event Action SavedScenesUpdatedEvent;
 
         public static void OpenScene(string scene)
