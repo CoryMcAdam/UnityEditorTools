@@ -2,7 +2,6 @@
     "name": "CMDev.EditorTools.Editor.Tests",
     "rootNamespace": "CMDev.EditorTools.Editor",
     "references": [
-        "GUID:151548d1e3e0c084aa9dec00a67be508",
         "GUID:c12bc2e238197d6419989102344e510d"
     ],
     "includePlatforms": [
