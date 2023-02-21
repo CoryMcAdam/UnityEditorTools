@@ -2,7 +2,7 @@
 
 A collection of editor tools to help improve workflow in Unity.
 
-###Features:
+### Features:
 - Scene Selector - Select and load scenes from the scene view.
 - Play from Scene - Enter play mode from a selected scene.
 - Hierarchy Headers - Organise your scene hierarchy.
