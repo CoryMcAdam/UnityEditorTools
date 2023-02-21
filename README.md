@@ -1,4 +1,4 @@
-# Editor Tools
+# Unity Editor Tools
 
 A collection of editor tools to help improve workflow in Unity.
 
