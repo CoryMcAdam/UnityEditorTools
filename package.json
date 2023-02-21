@@ -2,7 +2,7 @@
 	"name": "com.cmdev.editortools",
 	"version": "0.1.0",
 	"displayName": "CMDev Editor Tools",
-	"description": "A collection of general Unity scripts that I resuse between projects.",
+	"description": "A collection of editor tools to help improve workflow in Unity.",
 	"unity": "2021.3",
 	"author": {
 		"name": "Cory McAdam"
