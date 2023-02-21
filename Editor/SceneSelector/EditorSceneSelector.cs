@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CMDev.EditorTools.Editor
@@ -75,8 +77,22 @@ namespace CMDev.EditorTools.Editor
 
         private static void SaveToEditorPrefs()
         {
+            ClearMissingScenePaths();
+
             string serializedScenes = string.Join(";", _savedScenes.Where(s => !string.IsNullOrEmpty(s.Path)).Select(s => s.Path));
             Prefs.SetStringPref(SCENE_SELECTOR_PREF, serializedScenes);
+        }
+
+        private static void ClearMissingScenePaths()
+        {
+            for (int i = _savedScenes.Count - 1; i >= 0; i--)
+            {
+                if(!File.Exists(_savedScenes[i].Path))
+                {
+                    Debug.LogWarning($"[Scene Selector] Saved scene {_savedScenes[i].Name} not found at path, removing from list.");
+                    _savedScenes.RemoveAt(i);
+                }
+            }
         }
 
         private static void LoadFromEditorPrefs()
@@ -84,6 +100,8 @@ namespace CMDev.EditorTools.Editor
             string serializedScenes = Prefs.GetStringPref(SCENE_SELECTOR_PREF);
 
             _savedScenes = serializedScenes.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(s => new SceneData(s)).ToList();
+
+            ClearMissingScenePaths();
         }
     }
 }
