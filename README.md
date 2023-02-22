@@ -52,7 +52,10 @@ To create a header simply add "---" before the headers name and set the GameObje
 ![](https://i.imgur.com/QdUbFeT.png)
 
 # Installation
-To install the package, open the package manager, click the + icon, select "Add package from git URL..." and paste "https://github.com/CoryMcAdam/UnityEditorTools.git".
+To install the package, open the package manager, click the + icon, select "Add package from git URL..." and paste in:
+
+```https://github.com/CoryMcAdam/UnityEditorTools.git"```
+
 ![](https://i.imgur.com/hWZdAaS.png)
 
 Once installed the overlays can be enabled from the upper right corner of the scene view.
