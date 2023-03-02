@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CMDev.EditorTools.Editor
@@ -58,6 +60,8 @@ namespace CMDev.EditorTools.Editor
 
         private static void SaveToEditorPrefs()
         {
+            ValidateScenePath();
+
             Prefs.SetStringPref(PLAY_FROM_SCENE_SCENE_PREF, _selectedScene != null ? _selectedScene.Path : string.Empty);
         }
 
@@ -66,10 +70,18 @@ namespace CMDev.EditorTools.Editor
             _selectedScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_SCENE_PREF));
             _previousScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_PREV_SCENE_PREF));
             _startedFromDifferentScene = Prefs.GetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF);
+
+            ValidateScenePath();
         }
 
         public static void ChangeSceneAndEnterPlaymode()
         {
+            if (_selectedScene == null)
+                return;
+
+            if (!File.Exists(_selectedScene.Path))
+                return;
+
             Scene currentScene = SceneManager.GetActiveScene();
 
             if (currentScene.path != _selectedScene.Path)
@@ -94,6 +106,15 @@ namespace CMDev.EditorTools.Editor
             {
                 EditorSceneManager.OpenScene(_previousScene.Path);
                 Prefs.SetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF, false);
+            }
+        }
+
+        private static void ValidateScenePath()
+        {
+            if (!File.Exists(_selectedScene.Path))
+            {
+                Debug.LogWarning($"[Scene Selector] Saved scene {_selectedScene.Name} not found at path, removing from play from scene.");
+                _selectedScene = null;
             }
         }
     }
