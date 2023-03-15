@@ -99,6 +99,9 @@ namespace CMDev.EditorTools.Editor
         {
             string serializedScenes = Prefs.GetStringPref(SCENE_SELECTOR_PREF);
 
+            if (string.IsNullOrEmpty(serializedScenes))
+                return;
+
             _savedScenes = serializedScenes.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(s => new SceneData(s)).ToList();
 
             ClearMissingScenePaths();
