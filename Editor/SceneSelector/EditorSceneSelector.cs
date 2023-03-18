@@ -112,6 +112,12 @@ namespace CMDev.EditorTools.Editor
 
             _savedScenes = serializedScenes.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(s => new SceneData(s)).ToList();
 
+            for (int i = _savedScenes.Count -1; i >= 0; i--)
+            {
+                if (string.IsNullOrWhiteSpace(_savedScenes[i].Name))
+                    _savedScenes.RemoveAt(i);
+            }
+
             if (ClearMissingScenePaths())
                 SaveToEditorPrefs();
         }
