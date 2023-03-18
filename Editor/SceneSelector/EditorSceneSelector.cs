@@ -92,7 +92,7 @@ namespace CMDev.EditorTools.Editor
 
             for (int i = _savedScenes.Count - 1; i >= 0; i--)
             {
-                if (!File.Exists(_savedScenes[i].Path))
+                if (!File.Exists(_savedScenes[i].Path) || string.IsNullOrWhiteSpace(_savedScenes[i].Name))
                 {
                     Debug.LogWarning($"[Scene Selector] Saved scene {_savedScenes[i].Name} not found at path, removing from list.");
                     _savedScenes.RemoveAt(i);
