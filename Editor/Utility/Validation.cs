@@ -11,7 +11,7 @@ namespace CMDev.EditorTools.Editor
         {
             if (!File.Exists(sceneData?.Path) || string.IsNullOrWhiteSpace(sceneData?.Name))
             {
-                Debug.LogWarning($"Scene \"{sceneData.Name}\" not found at path");
+                Logging.LogWarning($"Scene \"{sceneData?.Name}\" not found at path \"{sceneData?.Path}\"");
                 return false;
             }
 

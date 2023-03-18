@@ -17,7 +17,7 @@ namespace CMDev.EditorTools.Editor
 
         public override void OnCreated()
         {
-            EditorSceneSelector.UpdateScenes();
+            EditorSceneSelector.LoadScenesList();
 
             EditorApplication.projectChanged += EditorApplication_ProjectChanged;
         }
@@ -29,7 +29,7 @@ namespace CMDev.EditorTools.Editor
 
         private void EditorApplication_ProjectChanged()
         {
-            EditorSceneSelector.UpdateScenes();
+            EditorSceneSelector.LoadScenesList();
         }
     }
 }

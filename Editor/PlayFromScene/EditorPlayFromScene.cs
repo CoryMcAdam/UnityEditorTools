@@ -15,10 +15,10 @@ namespace CMDev.EditorTools.Editor
         private static bool _startedFromDifferentScene;
 
         //Consts
-        public const string PLAY_FROM_SCENE_PREF = "PlayFromScene";
-        public const string PLAY_FROM_SCENE_SCENE_PREF = PLAY_FROM_SCENE_PREF + ".SavedScene";
-        public const string PLAY_FROM_SCENE_ACTIVE_PREF = PLAY_FROM_SCENE_PREF + ".StartedFromDifferentScene";
-        public const string PLAY_FROM_SCENE_PREV_SCENE_PREF = PLAY_FROM_SCENE_PREF + ".PreviousScene";
+        public const string PLAY_FROM_SCENE_PREF = "PlayFromScene.";
+        public const string PLAY_FROM_SCENE_SCENE_PREF = PLAY_FROM_SCENE_PREF + "SavedScene";
+        public const string PLAY_FROM_SCENE_ACTIVE_PREF = PLAY_FROM_SCENE_PREF + "StartedFromDifferentScene";
+        public const string PLAY_FROM_SCENE_PREV_SCENE_PREF = PLAY_FROM_SCENE_PREF + "PreviousScene";
 
         //Properties
         public static string SelectedSceneName { get { return _selectedScene != null ? _selectedScene.Name : "None"; } }
@@ -60,19 +60,26 @@ namespace CMDev.EditorTools.Editor
 
         private static void SaveToEditorPrefs()
         {
-            ValidateScenePath();
-
+            Logging.Log("[Play From Scene] Saving to editor prefs");
             Prefs.SetStringPref(PLAY_FROM_SCENE_SCENE_PREF, _selectedScene != null ? _selectedScene.Path : string.Empty);
         }
 
         private static void LoadFromEditorPrefs()
         {
-            _selectedScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_SCENE_PREF));
-            _previousScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_PREV_SCENE_PREF));
-            _startedFromDifferentScene = Prefs.GetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF);
+            Logging.Log("[Play From Scene] Loading from editor prefs");
 
-            if (!ValidateScenePath())
-                SaveToEditorPrefs();
+            string selectedScenePath = Prefs.GetStringPref(PLAY_FROM_SCENE_SCENE_PREF, "");
+            _selectedScene = string.IsNullOrWhiteSpace(selectedScenePath) ? null : new SceneData(selectedScenePath);
+
+
+            _previousScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_PREV_SCENE_PREF, ""));
+            _startedFromDifferentScene = Prefs.GetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF, false);
+
+            if (!string.IsNullOrWhiteSpace(selectedScenePath))
+            {
+                if (ClearMissingScene())
+                    SaveToEditorPrefs();
+            }
         }
 
         public static void ChangeSceneAndEnterPlaymode()
@@ -110,17 +117,17 @@ namespace CMDev.EditorTools.Editor
             }
         }
 
-        private static bool ValidateScenePath()
+        private static bool ClearMissingScene()
         {
             if (!Validation.ValidateScene(_selectedScene))
             {
-                Debug.LogWarning($"[Play From Scene] Saved scene not found, removing from play from scene.");
+                Logging.LogWarning($"[Play From Scene] Saved scene not found, removing from play from scene.");
                 _selectedScene = null;
 
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }
