@@ -9,7 +9,7 @@ namespace CMDev.EditorTools.Editor
     {
         public static bool ValidateScene(SceneData sceneData)
         {
-            if (!File.Exists(sceneData.Path) || string.IsNullOrWhiteSpace(sceneData.Name))
+            if (!File.Exists(sceneData?.Path) || string.IsNullOrWhiteSpace(sceneData?.Name))
             {
                 Debug.LogWarning($"Scene \"{sceneData.Name}\" not found at path");
                 return false;
