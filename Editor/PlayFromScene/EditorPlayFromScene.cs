@@ -71,7 +71,8 @@ namespace CMDev.EditorTools.Editor
             _previousScene = new SceneData(Prefs.GetStringPref(PLAY_FROM_SCENE_PREV_SCENE_PREF));
             _startedFromDifferentScene = Prefs.GetBoolPref(PLAY_FROM_SCENE_ACTIVE_PREF);
 
-            ValidateScenePath();
+            if (!ValidateScenePath())
+                SaveToEditorPrefs();
         }
 
         public static void ChangeSceneAndEnterPlaymode()
@@ -109,13 +110,17 @@ namespace CMDev.EditorTools.Editor
             }
         }
 
-        private static void ValidateScenePath()
+        private static bool ValidateScenePath()
         {
             if (!Validation.ValidateScene(_selectedScene))
             {
                 Debug.LogWarning($"[Play From Scene] Saved scene not found, removing from play from scene.");
                 _selectedScene = null;
+
+                return false;
             }
+
+            return true;
         }
     }
 }
