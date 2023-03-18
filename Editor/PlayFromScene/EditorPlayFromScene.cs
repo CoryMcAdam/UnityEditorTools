@@ -111,9 +111,9 @@ namespace CMDev.EditorTools.Editor
 
         private static void ValidateScenePath()
         {
-            if (!File.Exists(_selectedScene.Path))
+            if (!Validation.ValidateScene(_selectedScene))
             {
-                Debug.LogWarning($"[Scene Selector] Saved scene {_selectedScene.Name} not found at path, removing from play from scene.");
+                Debug.LogWarning($"[Play From Scene] Saved scene not found, removing from play from scene.");
                 _selectedScene = null;
             }
         }
