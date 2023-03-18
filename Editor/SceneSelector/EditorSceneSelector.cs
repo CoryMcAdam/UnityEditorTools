@@ -83,16 +83,24 @@ namespace CMDev.EditorTools.Editor
             Prefs.SetStringPref(SCENE_SELECTOR_PREF, serializedScenes);
         }
 
-        private static void ClearMissingScenePaths()
+        private static bool ClearMissingScenePaths()
         {
+            if (_savedScenes.Count <= 0)
+                return false;
+
+            bool _isDirty = false;
+
             for (int i = _savedScenes.Count - 1; i >= 0; i--)
             {
-                if(!File.Exists(_savedScenes[i].Path))
+                if (!File.Exists(_savedScenes[i].Path))
                 {
                     Debug.LogWarning($"[Scene Selector] Saved scene {_savedScenes[i].Name} not found at path, removing from list.");
                     _savedScenes.RemoveAt(i);
+                    _isDirty = true;
                 }
             }
+
+            return _isDirty;
         }
 
         private static void LoadFromEditorPrefs()
@@ -104,7 +112,8 @@ namespace CMDev.EditorTools.Editor
 
             _savedScenes = serializedScenes.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(s => new SceneData(s)).ToList();
 
-            ClearMissingScenePaths();
+            if (ClearMissingScenePaths())
+                SaveToEditorPrefs();
         }
     }
 }
