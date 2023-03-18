@@ -5,6 +5,9 @@ namespace CMDev.EditorTools.Editor
 {
     internal static class Prefs
     {
+        public const string SETTINGS_PREF = "Settings.";
+
+        #region SetPrefs
         public static void SetStringPref(string prefName, string value)
         {
             EditorPrefs.SetString($"{Application.productName}.{prefName}", value);
@@ -19,10 +22,17 @@ namespace CMDev.EditorTools.Editor
         {
             EditorPrefs.SetInt($"{Application.productName}.{prefName}", value);
         }
+        #endregion
 
+        #region GetPrefs
         public static string GetStringPref(string prefName)
         {
             return EditorPrefs.GetString($"{Application.productName}.{prefName}");
+        }
+
+        public static string GetStringPref(string prefName, string defaultValue)
+        {
+            return EditorPrefs.GetString($"{Application.productName}.{prefName}", defaultValue);
         }
 
         public static bool GetBoolPref(string prefName)
@@ -30,9 +40,20 @@ namespace CMDev.EditorTools.Editor
             return EditorPrefs.GetBool($"{Application.productName}.{prefName}");
         }
 
+        public static bool GetBoolPref(string prefName, bool defaultValue)
+        {
+            return EditorPrefs.GetBool($"{Application.productName}.{prefName}", defaultValue);
+        }
+
         public static int GetIntPref(string prefName)
         {
             return EditorPrefs.GetInt($"{Application.productName}.{prefName}");
         }
+
+        public static int GetIntPref(string prefName, int defaultValue)
+        {
+            return EditorPrefs.GetInt($"{Application.productName}.{prefName}", defaultValue);
+        }
+        #endregion
     }
 }

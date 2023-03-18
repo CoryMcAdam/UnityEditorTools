@@ -1,6 +1,6 @@
 {
 	"name": "com.cmdev.editortools",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"displayName": "Editor Tools",
 	"description": "A collection of editor tools to help improve workflow in Unity.",
 	"unity": "2021.3",
