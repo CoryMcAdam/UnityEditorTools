@@ -44,7 +44,7 @@ namespace CMDev.EditorTools.Editor
                 if (_hierarchyPrefix.Length < 1)
                 {
                     _hierarchyPrefix = HIERARCHY_DEFAULT_PREFIX;
-                    Debug.LogWarning("Prefix must be at least one character long.");
+                    Logging.LogWarning("Prefix must be at least one character long.");
                 }
 
                 return _hierarchyPrefix;
