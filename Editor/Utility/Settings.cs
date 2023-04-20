@@ -41,10 +41,10 @@ namespace CMDev.EditorTools.Editor
                 if (string.IsNullOrWhiteSpace(_hierarchyPrefix))
                     _hierarchyPrefix = Prefs.GetStringPref(HIERARCHY_PREFIX_PREF, HIERARCHY_DEFAULT_PREFIX);
 
-                if (_hierarchyPrefix.Length <= HIERARCHY_DEFAULT_PREFIX.Length)
+                if (_hierarchyPrefix.Length < 1)
                 {
                     _hierarchyPrefix = HIERARCHY_DEFAULT_PREFIX;
-                    Debug.LogWarning("Prefix must be 3 or more characters long.");
+                    Debug.LogWarning("Prefix must be at least one character long.");
                 }
 
                 return _hierarchyPrefix;
